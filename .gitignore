@@ -37,3 +37,13 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
+# data that is too big to be shared
+PrelimaryCodeData/IND_2018_R75250H_v1_M/Data/david_india.dta
+PrelimaryCodeData/IND_2018_R75250H_v1_M/Data/R/health18.RData
+PrelimaryCodeData/IND_2018_R75250H_v1_M/Data/STATA/R75250L03h.dta
+PrelimaryCodeData/IND_2018_R75252E_v1_M/Data/STATA/R75252L04.dta
+
+
+
+

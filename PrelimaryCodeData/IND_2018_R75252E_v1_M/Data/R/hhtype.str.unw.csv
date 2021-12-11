@@ -1,0 +1,13 @@
+"","sector","hhtype","rates"
+"1","RURAL","casual labour in agriculture",0.134828500131744
+"2","RURAL","casual labour in non-agriculture",0.12780731257459
+"3","RURAL","others",0.0564949859731242
+"4","RURAL","regular wage/salary earning in agriculture",0.0123374509834312
+"5","RURAL","regular wage/salary earning in non-agriculture",0.108061191276988
+"6","RURAL","self-employed in agriculture",0.399262232830639
+"7","RURAL","self-employed in non-agriculture",0.161208326229483
+"8","URBAN","casual labor",0.118932531784394
+"9","URBAN","NA",0.0000203095170396848
+"10","URBAN","others",0.124720744140704
+"11","URBAN","regular wage/salary earning",0.362179617368699
+"12","URBAN","self-emplyed",0.394146797189163

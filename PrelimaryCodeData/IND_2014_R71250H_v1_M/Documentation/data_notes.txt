@@ -1,0 +1,27 @@
+Some notes from reading the documentation and dealing with the data
+
+- Due to the change in coverage and difference in concepts and definitions in respect of
+some important parameters followed in the two rounds, the results of NSS 71st round are not
+strictly comparable with the results of NSS 60th round. While making any comparison, these
+differences may be taken into consideration.
+
+- The sampling seems like they survey 8 households on each block. The FSU are census villages in
+the rural areas and Urban Frame Survey (UFS) blocks in the Urban areas. Large FSUs are broken up
+into smaller groups or blocks. The ultimate sampling unit is the household. An equal number of 
+households are picked up in each block. Its a stratified multi-stage sample which in this case 
+means the districts form the number of strata. The substrata size is equal to the number of 
+households in each block. 
+
+- Household's usual consumer expenditure in a month: Households usual consumer expenditure is the
+sum total of monetary values of all goods and services usually consumed (out of purchase or procured
+otherwise) by the household on domestic account during a month. This has the following components
+which are given below: 
+A. usual expenditure for household purposes in a month
+B. Purchase value of any household durables (mobile phones, TV sets, fridge, fans, cooler, AC, 
+vehicles, computers, furniture, kitchen equipment, etc) purchased during the last one year and
+the expenditure per month obtained by dividing by 12. 
+C. if any household consumption (usually) from (a) wages in kind (b) home-grown stock (c) free 
+collection was there, then the approximate monthly value of the amount usually consumed in a 
+month was imputed
+
+
