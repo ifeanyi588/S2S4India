@@ -1,0 +1,43 @@
+
+. 
+. * locals for directories and variables
+. 
+. local datain "$data\finaldata\sae14.dta"
+
+. local datainu "$data\finaldata\sae14u.dta"
+
+. local datainr "$data\finaldata\sae14r.dta"
+
+. 
+. local dataout "$analysis\SAE_MATA"
+
+. local dataoutu "$analysis\SAE_MATAu"
+
+. local dataoutr "$analysis\SAE_MATAr"
+
+. 
+. local ydump "$analysis\mata"
+
+. local ydumpu "$analysis\matau"
+
+. local ydumpr "$analysis\matar"
+
+. 
+. glo res "$analysis\SAE_results"
+
+. 
+. 
+. ********************************************************************************
+. ************************************ MODEL ************************************
+. ********************************************************************************
+. 
+. 
+. use "$data\finaldata\hh_reg.dta", replace
+file \finaldata\hh_reg.dta not found
+r(601);
+
+end of do-file
+
+r(601);
+
+. exit, clear

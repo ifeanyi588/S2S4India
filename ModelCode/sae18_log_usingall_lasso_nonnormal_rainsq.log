@@ -1,0 +1,467 @@
+
+. 
+. 
+. * locals for directories and variables
+. 
+. local datain "$data2\sae18.dta"
+
+. local datainu "$data2\sae18u.dta"
+
+. local datainr "$data2\sae18r.dta"
+
+. 
+. local dataout "$analysis\SAE_MATA18_usingall_lasso_nonnormal_rainsq"
+
+. local dataoutu "$analysis\SAE_MATA18u_usingall_lasso_nonnormal_rainsq"
+
+. local dataoutr "$analysis\SAE_MATA18r_usingall_lasso_nonnormal_rainsq"
+
+. 
+. 
+. local ydump "$analysis\mata18_usingall_lasso_nonnormal_rainsq"
+
+. local ydumpu "$analysis\mata18u_usingall_lasso_nonnormal_rainsq"
+
+. local ydumpr "$analysis\mata18r_usingall_lasso_nonnormal_rainsq"
+
+. 
+. glo res "$analysis\SAE_results"
+
+. 
+. 
+. ********************************************************************************
+. ************************************ MODEL ************************************
+. ********************************************************************************
+. 
+. * First Stage
+. use "$path\data\finaldata\newmaster.dta", clear
+file \data\finaldata\newmaster.dta not found
+r(601);
+
+end of do-file
+
+r(601);
+
+. do "D:\Poverty_Estimates_India\SAE_India\Master_00_test_newvars.do"
+
+. /***********************************************************************************************
+> ******
+> *                                                                                               
+>      *
+>                                    INITIAL COMMANDS
+> *                                                                                               
+>      *
+> ************************************************************************************************
+> *****/
+. 
+. ** INITIAL COMMANDS
+.    clear
+
+.    set more off, perm
+(set more preference recorded)
+
+.    set matsize 5000 
+set matsize ignored.
+    Matrix sizes are no longer limited by c(matsize) in modern Statas.  Matrix sizes are now
+    limited by flavor of Stata.  See limits for more details.
+
+.    
+. ** DIRECTORY
+. 
+. 
+. *** To modify these files I create a folder to take new outputs
+. 
+. 
+. glo path "D:\Poverty_Estimates_India"
+
+. glo pathout "D:\Poverty_Estimates_India\IndiaModelRuns"
+
+. 
+. *Change next path to your current directory
+. * 61 = 2004/05 
+. * 66 = 2009/10 
+. * 68 = 2011/12
+. * 72 = 2014/15 
+. 
+.     glo data  "$path\data\replication" //contains input data
+
+.         glo data2  "$pathout\data\replication" //contains input data
+
+.         glo data61  "$data\NSSO61" //these next 4 are input datasets
+
+.         glo data66  "$data\NSSO66" 
+
+.         glo data68  "$data\NSSO68"
+
+.         glo data72  "$data\NSSO72"
+
+.         
+.         
+.         glo analysis  "$pathout\analysis" //all these are output datasets, the result of "analys
+> is"
+
+.         glo analysis61  "$analysis\NSSO61"
+
+.     glo analysis66  "$analysis\NSSO66"
+
+.         glo analysis68  "$analysis\NSSO68"
+
+.         glo analysis72  "$analysis\NSSO72"
+
+.         glo analysislasso  "$pathout\analysis\lasso"
+
+. 
+.         glo desc_stats "$analysis\desc_stats" 
+
+.         
+.         glo graphs "$pathout\graphs"  //output graphs
+
+.         glo tables "$pathout\tables"  //output tables
+
+.         glo resleasso "$analysislasso\lasso\SAE_results" //output lasso results
+
+. 
+.         
+. glo candidate_xvars_rur "Dhhsizecat? Dhhsizecat?h Dagecat? Dagecat?h hindu hinduh scst scsth" 
+
+. glo candidate_xvars_rur "${candidate_xvars_rur} selfemployed selfemployedh casualurban regwageur
+> ban" 
+
+. glo candidate_xvars_rur "${candidate_xvars_rur} middleskillocc  middleskillocch highskillocc hig
+> hskillocch agri agrih ind indh " 
+
+. glo candidate_xvars_rur "${candidate_xvars_rur} rainfallQ? rainfallQ?sq" 
+
+. */ 
+. 
+. glo candidate_xvars_rur_tt "Dhhsizecat?h Dagecat?h hinduh scsth" 
+
+. glo candidate_xvars_rur_tt "${candidate_xvars_rur_tt} selfemployedh" 
+
+. glo candidate_xvars_rur_tt "${candidate_xvars_rur_tt} middleskillocch highskillocch agrih indh "
+>  
+
+. 
+.  
+.  
+. glo candidate_xvars_urb  "Dhhsizecat? Dhhsizecat?h Dagecat? Dagecat?h hindu hinduh scst scsth"
+
+. glo candidate_xvars_urb "${candidate_xvars_urb}         selfemployed selfemployedh casualurban c
+> asualurbanh regwageurban regwageurbanh "
+
+. glo candidate_xvars_urb "${candidate_xvars_urb} middleskillocc  middleskillocch highskillocc hig
+> hskillocch agri agrih ind indh  "
+
+. glo candidate_xvars_urb "${candidate_xvars_urb} rainfallQ? rainfallQ?sq"        
+
+.  
+. 
+. glo candidate_xvars_urb_tt  "Dhhsizecat?h Dagecat?h hinduh scsth"
+
+. glo candidate_xvars_urb_tt "${candidate_xvars_urb_tt} selfemployedh casualurbanh regwageurbanh"
+
+. glo candidate_xvars_urb_tt      "${candidate_xvars_urb_tt}  middleskillocch highskillocch agrih 
+> indh  "
+
+. 
+. 
+. glo estimates "$pathout\estimates" 
+
+. glo estimateslasso "$estimates\new_transport\lasso" 
+
+. 
+. 
+. 
+. **here is a list of variables we drop 
+. 
+. *from the candidate_xvars_rur = hhr hhrh recr recrh transpr transprh
+. *from the candidate_xvars_rur_tt = hhrh recrh transprh
+. *from the candidate_xvars_urb = hhr hhrh recr recrh transpr transprh
+. *from the candidate_xvars_urb_tt = hhrh recrh transprh
+. 
+. 
+. 
+. *exit 
+. *glo candidate_xvars_urb "${candidate_xvars_urb}  hhrh recrh transprh rainfallQ? rainfallQ?sq"  
+. 
+.         
+. /* I. Each file below gets the data for all 4 rounds.
+> 
+> a) Household Characteristics
+> data_hh_charac.do
+> 
+> b) Durable Expenditures 
+> data_durables.do
+> 
+> c) Expenses for miscellaneous consumer services
+> data_misc_services.do
+> 
+> d) Total Consumer Expenditure Data
+> data_consump_exp.do
+> 
+> e) process district concordance file 
+> 
+> do process_districts.do 
+> 
+> 
+> 
+> * II. Merging all of the above datasets together
+> do finaldata.do
+> 
+> * III. Creating Descriptive Statistics
+> desc.do
+> desc_durables.do
+> 
+> * IV. Regressions
+> regressions.do
+> regressions_regions.do
+> */ 
+.  
+. * V. Select models, separately for district time trends and aggregates 
+. * time trends program takes a LONG time (3 days) to run 
+. * do modelselection_timetrends 
+. * do modelselection_districtmeans 
+. 
+. **here is a list of variables we drop 
+. 
+. *from the candidate_xvars_rur = hhr hhrh recr recrh transpr transprh
+. *from the candidate_xvars_rur_tt = hhrh recrh transprh
+. *from the candidate_xvars_urb = hhr hhrh recr recrh transpr transprh
+. *from the candidate_xvars_urb_tt = hhrh recrh transprh
+. cd "D:\Poverty_Estimates_India\dofiles" 
+D:\Poverty_Estimates_India\dofiles
+
+. exit
+
+end of do-file
+
+
+.  do "D:\Poverty_Estimates_India\SAE_India\Master_00_test_newvars.do"
+
+. /***********************************************************************************************
+> ******
+> *                                                                                               
+>      *
+>                                    INITIAL COMMANDS
+> *                                                                                               
+>      *
+> ************************************************************************************************
+> *****/
+. 
+. ** INITIAL COMMANDS
+.    clear
+
+.    set more off, perm
+(set more preference recorded)
+
+.    set matsize 5000 
+set matsize ignored.
+    Matrix sizes are no longer limited by c(matsize) in modern Statas.  Matrix sizes are now
+    limited by flavor of Stata.  See limits for more details.
+
+.    
+. ** DIRECTORY
+. 
+. 
+. *** To modify these files I create a folder to take new outputs
+. 
+. 
+. glo path "D:\Poverty_Estimates_India"
+
+. glo pathout "D:\Poverty_Estimates_India\IndiaModelRuns"
+
+. 
+. *Change next path to your current directory
+. * 61 = 2004/05 
+. * 66 = 2009/10 
+. * 68 = 2011/12
+. * 72 = 2014/15 
+. 
+.     glo data  "$path\data\replication" //contains input data
+
+.         glo data2  "$pathout\data\replication" //contains input data
+
+.         glo data61  "$data\NSSO61" //these next 4 are input datasets
+
+.         glo data66  "$data\NSSO66" 
+
+.         glo data68  "$data\NSSO68"
+
+.         glo data72  "$data\NSSO72"
+
+.         
+.         
+.         glo analysis  "$pathout\analysis" //all these are output datasets, the result of "analys
+> is"
+
+.         glo analysis61  "$analysis\NSSO61"
+
+.     glo analysis66  "$analysis\NSSO66"
+
+.         glo analysis68  "$analysis\NSSO68"
+
+.         glo analysis72  "$analysis\NSSO72"
+
+.         glo analysislasso  "$pathout\analysis\lasso"
+
+. 
+.         glo desc_stats "$analysis\desc_stats" 
+
+.         
+.         glo graphs "$pathout\graphs"  //output graphs
+
+.         glo tables "$pathout\tables"  //output tables
+
+.         glo resleasso "$analysislasso\lasso\SAE_results" //output lasso results
+
+. 
+.         
+. glo candidate_xvars_rur "Dhhsizecat? Dhhsizecat?h Dagecat? Dagecat?h hindu hinduh scst scsth" 
+
+. glo candidate_xvars_rur "${candidate_xvars_rur} selfemployed selfemployedh casualurban regwageur
+> ban" 
+
+. glo candidate_xvars_rur "${candidate_xvars_rur} middleskillocc  middleskillocch highskillocc hig
+> hskillocch agri agrih ind indh " 
+
+. glo candidate_xvars_rur "${candidate_xvars_rur} rainfallQ? rainfallQ?sq" 
+
+. */ 
+. 
+. glo candidate_xvars_rur_tt "Dhhsizecat?h Dagecat?h hinduh scsth" 
+
+. glo candidate_xvars_rur_tt "${candidate_xvars_rur_tt} selfemployedh" 
+
+. glo candidate_xvars_rur_tt "${candidate_xvars_rur_tt} middleskillocch highskillocch agrih indh "
+>  
+
+. 
+.  
+.  
+. glo candidate_xvars_urb  "Dhhsizecat? Dhhsizecat?h Dagecat? Dagecat?h hindu hinduh scst scsth"
+
+. glo candidate_xvars_urb "${candidate_xvars_urb}         selfemployed selfemployedh casualurban c
+> asualurbanh regwageurban regwageurbanh "
+
+. glo candidate_xvars_urb "${candidate_xvars_urb} middleskillocc  middleskillocch highskillocc hig
+> hskillocch agri agrih ind indh  "
+
+. glo candidate_xvars_urb "${candidate_xvars_urb} rainfallQ? rainfallQ?sq"        
+
+.  
+. 
+. glo candidate_xvars_urb_tt  "Dhhsizecat?h Dagecat?h hinduh scsth"
+
+. glo candidate_xvars_urb_tt "${candidate_xvars_urb_tt} selfemployedh casualurbanh regwageurbanh"
+
+. glo candidate_xvars_urb_tt      "${candidate_xvars_urb_tt}  middleskillocch highskillocch agrih 
+> indh  "
+
+. 
+. 
+. glo estimates "$pathout\estimates" 
+
+. glo estimateslasso "$estimates\new_transport\lasso" 
+
+. 
+. 
+. 
+. **here is a list of variables we drop 
+. 
+. *from the candidate_xvars_rur = hhr hhrh recr recrh transpr transprh
+. *from the candidate_xvars_rur_tt = hhrh recrh transprh
+. *from the candidate_xvars_urb = hhr hhrh recr recrh transpr transprh
+. *from the candidate_xvars_urb_tt = hhrh recrh transprh
+. 
+. 
+. 
+. *exit 
+. *glo candidate_xvars_urb "${candidate_xvars_urb}  hhrh recrh transprh rainfallQ? rainfallQ?sq"  
+. 
+.         
+. /* I. Each file below gets the data for all 4 rounds.
+> 
+> a) Household Characteristics
+> data_hh_charac.do
+> 
+> b) Durable Expenditures 
+> data_durables.do
+> 
+> c) Expenses for miscellaneous consumer services
+> data_misc_services.do
+> 
+> d) Total Consumer Expenditure Data
+> data_consump_exp.do
+> 
+> e) process district concordance file 
+> 
+> do process_districts.do 
+> 
+> 
+> 
+> * II. Merging all of the above datasets together
+> do finaldata.do
+> 
+> * III. Creating Descriptive Statistics
+> desc.do
+> desc_durables.do
+> 
+> * IV. Regressions
+> regressions.do
+> regressions_regions.do
+> */ 
+.  
+. * V. Select models, separately for district time trends and aggregates 
+. * time trends program takes a LONG time (3 days) to run 
+. * do modelselection_timetrends 
+. * do modelselection_districtmeans 
+. 
+. **here is a list of variables we drop 
+. 
+. *from the candidate_xvars_rur = hhr hhrh recr recrh transpr transprh
+. *from the candidate_xvars_rur_tt = hhrh recrh transprh
+. *from the candidate_xvars_urb = hhr hhrh recr recrh transpr transprh
+. *from the candidate_xvars_urb_tt = hhrh recrh transprh
+. cd "D:\Poverty_Estimates_India\dofiles" 
+D:\Poverty_Estimates_India\dofiles
+
+. exit
+
+end of do-file
+
+
+.  do "D:\Poverty_Estimates_India\SAE_India\pooled_data\sae18_usingpooled_lasso_nonnormal_rainsq.d
+> o"
+
+. /***********************************************************************************************
+> ******
+> ************************************************************************************************
+> ******
+> **                                                                                              
+>     **
+> **                  IMPUTATION OF CONSUMPTION EXPD IN THE 2014 DATA                             
+>      **
+> **                                                                                              
+>     **
+> ** COUNTRY                      INDIA
+> ** YEARS                        2004-05; 2009-10; 2011-12
+> ** SURVEY NAME          NATIONAL SAMPLE SURVEY 
+> ** SURVEY AGENCY        NATIONAL SAMPLE SURVEY OFFICE
+> ** CREATED  BY Pallavi Vyas 
+> ** MODIFIED BY Pallavi Vyas 
+> ** Modified      11/15/2017
+>                                                                                                 
+>         
+> ************************************************************************************************
+> *****
+> *                                                                                               
+>     *                          
+> ***** --- ELL ESTIMATION: Uses the 2004.5, 2009.5 and 2011.5 surveys to impute into 2014-15 --- 
+> *****
+> *                                                                                               
+>     *
+> ************************************************************************************************
+> *****/
+. 
+. *ATTENTION: DO NOT FORGET TO SAVE TO AN APPROPRIATELY NAMED FILE
+. cap log close

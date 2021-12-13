@@ -1,0 +1,256 @@
+
+. 
+. glo path "D:\Poverty_Estimates_India"
+
+. glo pathout "D:\Poverty_Estimates_India\IndiaModelRuns"
+
+. 
+. glo data  "$path\data\replication" //contains input data
+
+. glo data2  "$pathout\data\replication" //contains input data
+
+. 
+. glo analysis  "$pathout\analysis" //all these are output datasets, the result
+>  of "analysis"
+
+. 
+. global ruralvars "Dagecat1h Dagecat1 Dagecat2 Dagecat2h Dagecat3 Dagecat3h Da
+> gecat4h Dagecat4 Dagecat5" 
+
+. global ruralvars "${ruralvars} hhsizeh hhsize highskillocc highskillocch" 
+
+. global ruralvars "${ruralvars} middleskillocc middleskillocch indh agri agrih
+>  scst scsth selfemployed selfemployedh" 
+
+. global ruralvars "${ruralvars} depratio depratioh hhage"
+
+. global ruralvars "${ruralvars} Dmarriedh Dmarried" 
+
+. global ruralvars "${ruralvars} Dmaleh Dmale" 
+
+. global ruralvars "${ruralvars} Dfirewood Ddungcakeh Ddungcake Dnocookingh Dno
+> cooking Dcokecoal"
+
+. global ruralvars "${ruralvars} Dkerosene Delectricityh Delectricity Dcharcoal
+>  Dlpg Dlpgh"  
+
+. global ruralvars "${ruralvars} rainfallQ1 rainfallQ2 rainfallQ3 rainfallQ4"
+
+. global ruralvars "${ruralvars} rainfallQ1sq rainfallQ2sq rainfallQ3sq"
+
+. 
+.                    
+.                            
+. 
+. ****Code to estimate the drivers of the difference between predictions in 201
+> 1 and 2018
+. 
+. use "$path\data\finaldata\oaxaca_rural.dta", clear 
+(Written by R)
+
+. 
+. reg lnwelf $ruralvars [pw = pop_wgt] if year == 2011
+(sum of wgt is 791,982,350.22921)
+
+Linear regression                               Number of obs     =     59,501
+                                                F(48, 59452)      =     181.45
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.3379
+                                                Root MSE          =     .41455
+
+------------------------------------------------------------------------------
+             |               Robust
+   lnwelfare |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   Dagecat1h |  -.3455536   .0352848    -9.79   0.000    -.4147119   -.2763953
+    Dagecat1 |  -1.025432   .1983739    -5.17   0.000    -1.414245   -.6366179
+    Dagecat2 |  -.8638261    .408935    -2.11   0.035     -1.66534   -.0623118
+   Dagecat2h |  -.1572501   .0303108    -5.19   0.000    -.2166594   -.0978408
+    Dagecat3 |  -1.121502   .4023533    -2.79   0.005    -1.910116   -.3328881
+   Dagecat3h |   .0600551   .0290037     2.07   0.038     .0032078    .1169025
+   Dagecat4h |    .129825    .022806     5.69   0.000     .0851252    .1745248
+    Dagecat4 |  -1.282261   .4251001    -3.02   0.003    -2.115459    -.449063
+    Dagecat5 |  -.5580664   .4311634    -1.29   0.196    -1.403148    .2870155
+     hhsizeh |  -.0281529   .0029154    -9.66   0.000    -.0338671   -.0224386
+      hhsize |   .0170926   .0072221     2.37   0.018     .0029373    .0312479
+highskillocc |  -.4701983   .0646451    -7.27   0.000    -.5969029   -.3434937
+highskillo~h |   .1132139   .0123557     9.16   0.000     .0889968    .1374311
+middleskil~c |  -.5435645    .080153    -6.78   0.000    -.7006647   -.3864642
+middleskil~h |   .0363879   .0135204     2.69   0.007     .0098879    .0628879
+        indh |  -.0747887   .0101351    -7.38   0.000    -.0946535    -.054924
+        agri |  -.3634327   .0360715   -10.08   0.000     -.434133   -.2927324
+       agrih |  -.0734454   .0101168    -7.26   0.000    -.0932745   -.0536164
+        scst |  -.0905499   .0202474    -4.47   0.000    -.1302349    -.050865
+       scsth |  -.1137018   .0084672   -13.43   0.000    -.1302974   -.0971061
+selfemployed |   .1227917   .0327906     3.74   0.000      .058522    .1870615
+selfemploy~h |   .1125518   .0071507    15.74   0.000     .0985363    .1265672
+    depratio |  -.1305011    .352291    -0.37   0.711    -.8209928    .5599905
+   depratioh |  -.1481614    .024148    -6.14   0.000    -.1954915   -.1008313
+       hhage |  -.0004402   .0004842    -0.91   0.363    -.0013892    .0005088
+   Dmarriedh |   .0145009     .01357     1.07   0.285    -.0120963    .0410981
+    Dmarried |   .1103028   .1243684     0.89   0.375    -.1334597    .3540654
+      Dmaleh |  -.0060937   .0153093    -0.40   0.691    -.0360999    .0239125
+       Dmale |  -.0602891   .1094856    -0.55   0.582    -.2748813    .1543031
+   Dfirewood |  -.2729778   .0593984    -4.60   0.000    -.3893989   -.1565568
+  Ddungcakeh |   .0340551   .0128337     2.65   0.008     .0089009    .0592092
+   Ddungcake |  -.2485401   .0691148    -3.60   0.000    -.3840054   -.1130748
+ Dnocookingh |   .5981708   .0753178     7.94   0.000     .4505476    .7457941
+  Dnocooking |  -.8402443   .3098157    -2.71   0.007    -1.447484   -.2330042
+   Dcokecoal |   -.334831   .0822165    -4.07   0.000    -.4959757   -.1736864
+   Dkerosene |  -1.395588   .2103265    -6.64   0.000    -1.807829   -.9833476
+Delectrici~h |   .4564289   .1100634     4.15   0.000     .2407043    .6721535
+Delectricity |  -.2841058   .8952214    -0.32   0.751    -2.038743    1.470532
+   Dcharcoal |  -1.604495    1.19506    -1.34   0.179    -3.946817    .7378268
+        Dlpg |   .1597098   .0662904     2.41   0.016     .0297804    .2896392
+       Dlpgh |   .2956762    .009799    30.17   0.000       .27647    .3148823
+  rainfallQ1 |  -.1235347   .0089122   -13.86   0.000    -.1410027   -.1060667
+  rainfallQ2 |   .0403712    .009007     4.48   0.000     .0227175    .0580249
+  rainfallQ3 |  -.0148659   .0148326    -1.00   0.316    -.0439378    .0142059
+  rainfallQ4 |   .1734745   .0122711    14.14   0.000     .1494231    .1975258
+rainfallQ1sq |   .0654728   .0127431     5.14   0.000     .0404963    .0904492
+rainfallQ2sq |  -.1191174   .0153204    -7.78   0.000    -.1491455   -.0890893
+rainfallQ3sq |   .1025281   .0135499     7.57   0.000     .0759702    .1290859
+       _cons |   6.153964   .4109511    14.97   0.000     5.348498     6.95943
+------------------------------------------------------------------------------
+
+. predict yhatrural 
+(option xb assumed; fitted values)
+
+. 
+. oaxaca yhatrural $ruralvars [pw=pop_wgt], by(year) pooled relax nose
+
+Blinder-Oaxaca decomposition                    Number of obs     =    117,539
+                                                  Model           =     linear
+Group 1: year = 2011                              N of obs 1      =      59501
+Group 2: year = 2017                              N of obs 2      =      58038
+
+------------------------------------------------------------------------------
+   yhatrural |      Coef.
+-------------+----------------------------------------------------------------
+overall      |
+     group_1 |   4.399079
+     group_2 |   4.723283
+  difference |  -.3242042
+   explained |  -.3242041
+ unexplained |  -7.12e-09
+-------------+----------------------------------------------------------------
+explained    |
+   Dagecat1h |  -.0186572
+    Dagecat1 |  -.0534921
+    Dagecat2 |   .0187905
+   Dagecat2h |   .0039142
+    Dagecat3 |   .0142452
+   Dagecat3h |   -.000947
+   Dagecat4h |  -.0010149
+    Dagecat4 |   .0060411
+    Dagecat5 |   .0106855
+     hhsizeh |  -.0020439
+      hhsize |   .0111661
+highskillocc |   .0068316
+highskillo~h |  -.0009464
+middleskil~c |  -.0010628
+middleskil~h |   .0001609
+        indh |   .0006471
+        agri |  -.0001118
+       agrih |   .0016141
+        scst |   .0015142
+       scsth |   .0017761
+selfemployed |  -.0006595
+selfemploy~h |  -.0026916
+    depratio |  -.0017386
+   depratioh |  -.0030547
+       hhage |   .0002508
+   Dmarriedh |  -.0000821
+    Dmarried |   .0009122
+      Dmaleh |   .0001205
+       Dmale |  -.0000562
+   Dfirewood |  -.0573994
+  Ddungcakeh |   .0020572
+   Ddungcake |  -.0089937
+ Dnocookingh |   .0007184
+  Dnocooking |  -.0001388
+   Dcokecoal |  -.0026177
+   Dkerosene |  -.0134562
+Delectrici~h |   .0001198
+Delectricity |  -.0001105
+   Dcharcoal |   .0010588
+        Dlpg |  -.0456663
+       Dlpgh |  -.0775412
+  rainfallQ1 |  -.0086956
+  rainfallQ2 |  -.0228748
+  rainfallQ3 |  -.0021727
+  rainfallQ4 |  -.1117563
+rainfallQ1sq |  -.0061256
+rainfallQ2sq |   .0296827
+rainfallQ3sq |   .0075962
+-------------+----------------------------------------------------------------
+unexplained  |
+   Dagecat1h |   4.78e-09
+    Dagecat1 |  -2.96e-08
+    Dagecat2 |  -1.37e-08
+   Dagecat2h |   1.31e-09
+    Dagecat3 |  -1.48e-08
+   Dagecat3h |  -2.20e-10
+   Dagecat4h |   5.82e-10
+    Dagecat4 |  -2.08e-08
+    Dagecat5 |  -1.39e-09
+     hhsizeh |  -2.91e-09
+      hhsize |  -3.00e-08
+highskillocc |   4.71e-09
+highskillo~h |   4.69e-10
+middleskil~c |   2.85e-09
+middleskil~h |  -3.45e-10
+        indh |  -3.54e-10
+        agri |  -2.18e-09
+       agrih |   3.85e-09
+        scst |  -1.11e-08
+       scsth |   9.53e-10
+selfemployed |   3.78e-11
+selfemploy~h |   3.48e-10
+    depratio |   1.87e-08
+   depratioh |   5.59e-10
+       hhage |  -8.69e-09
+   Dmarriedh |  -5.87e-09
+    Dmarried |  -3.11e-08
+      Dmaleh |   6.12e-09
+       Dmale |   7.45e-08
+   Dfirewood |   1.76e-09
+  Ddungcakeh |  -3.60e-10
+   Ddungcake |   1.75e-09
+ Dnocookingh |   1.42e-10
+  Dnocooking |   3.68e-10
+   Dcokecoal |  -2.79e-10
+   Dkerosene |   8.46e-10
+Delectrici~h |   2.40e-11
+Delectricity |  -3.55e-10
+   Dcharcoal |   1.87e-10
+        Dlpg |  -1.50e-08
+       Dlpgh |  -7.63e-10
+  rainfallQ1 |  -2.26e-09
+  rainfallQ2 |  -4.55e-10
+  rainfallQ3 |  -3.76e-09
+  rainfallQ4 |  -5.22e-10
+rainfallQ1sq |   6.01e-10
+rainfallQ2sq |   2.07e-09
+rainfallQ3sq |   8.99e-10
+       _cons |   6.12e-08
+------------------------------------------------------------------------------
+
+. 
+. matrix results_rural = r(table)'
+
+. putexcel set oaxaca_rural.xlsx, sheet("rural", replace) modify
+
+. putexcel A1 = "Type"
+file oaxaca_rural.xlsx saved
+
+. putexcel B1 = "Variable"
+file oaxaca_rural.xlsx saved
+
+. putexcel C1 = "Value"
+file oaxaca_rural.xlsx saved
+
+. putexcel A2 = matrix(results_rural),rownames
+file oaxaca_rural.xlsx saved
+
+. cap log close

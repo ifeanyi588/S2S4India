@@ -1,0 +1,45 @@
+--------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  D:\Poverty_Estimates_India\replicate paper\modelselection_districtmeans.log
+  log type:  text
+ opened on:   6 Mar 2020, 08:32:05
+
+. 
+. 
+. 
+. ** Rural model 
+. 
+. dis "`trends_rural'" 
+
+
+.  
+.  local model1_rur "$candidate_xvars_rur" 
+
+. * do not interact rainfall with time, given the draught it is just asking too much of the data 
+.  local interactions_rur "`model1_rur'" 
+
+. local interactions_rur : subinstr local interactions_rur "rainfallQ?" ""
+
+. local interactions_rur : subinstr local interactions_rur "rainfallQ?sq" ""
+
+.  
+.  foreach var in `interactions_rur' {
+  2.                 local model1_rur "`model1_rur' `var't" 
+  3.                 } 
+
+. local model1_rur "`model1_rur' t"  
+
+.                 
+. dis "`model1_rur'" 
+ t
+
+. 
+. use "$data\finaldata\hh_reg.dta" if urban==0, clear 
+file \finaldata\hh_reg.dta not found
+r(601);
+
+end of do-file
+
+r(601);
+
+. exit, clear

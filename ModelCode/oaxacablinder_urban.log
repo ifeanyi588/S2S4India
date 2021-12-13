@@ -1,0 +1,253 @@
+
+. 
+. glo path "D:\Poverty_Estimates_India"
+
+. glo pathout "D:\Poverty_Estimates_India\IndiaModelRuns"
+
+. 
+. glo data  "$path\data\replication" //contains input data
+
+. glo data2  "$pathout\data\replication" //contains input data
+
+. 
+. glo analysis  "$pathout\analysis" //all these are output datasets, the result
+>  of "analysis"
+
+. 
+. global urbanvars "Dagecat1h Dagecat1 Dagecat2 Dagecat2h Dagecat3 Dagecat3h Da
+> gecat4h Dagecat5 Dagecat5h" 
+
+. global urbanvars "${urbanvars} hhsizeh hhsize highskillocc highskillocch" 
+
+. global urbanvars "${urbanvars} middleskillocch indh agrih agri scsth selfempl
+> oyedh" 
+
+. global urbanvars "${urbanvars} regwageurban regwageurbanh depratio"
+
+. global urbanvars "${urbanvars} Dmarriedh Dmaleh hhage" 
+
+. global urbanvars "${urbanvars} Dfirewood Dfirewoodh Ddungcakeh Ddungcake Dnoc
+> ookingh Dnocooking Dcokecoalh Dkeroseneh"
+
+. global urbanvars "${urbanvars} Dkerosene Delectricityh Delectricity Dcharcoal
+>  Dcharcoalh Dlpg"  
+
+. global urbanvars "${urbanvars} rainfallQ1 rainfallQ3 rainfallQ4"
+
+. global urbanvars "${urbanvars} rainfallQ1sq rainfallQ2sq rainfallQ3sq rainfal
+> lQ4sq"
+
+.                            
+.                            
+. 
+. ****Code to estimate the drivers of the difference between predictions in 201
+> 1 and 2018
+. 
+. use "$path\data\finaldata\oaxaca_urban.dta", clear 
+(Written by R)
+
+. 
+. 
+. reg lnwelf $urbanvars [pw = pop_wgt] if year == 2011
+(sum of wgt is 316,736,829.34263)
+
+Linear regression                               Number of obs     =     41,706
+                                                F(46, 41659)      =     216.19
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.4437
+                                                Root MSE          =     .48315
+
+------------------------------------------------------------------------------
+             |               Robust
+   lnwelfare |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   Dagecat1h |  -.5690016   .0555201   -10.25   0.000    -.6778223    -.460181
+    Dagecat1 |   -.995268   .2048289    -4.86   0.000    -1.396737   -.5937991
+    Dagecat2 |    .579323   .2287815     2.53   0.011     .1309066    1.027739
+   Dagecat2h |  -.2610281   .0510343    -5.11   0.000    -.3610563   -.1609998
+    Dagecat3 |   .6805339   .1930939     3.52   0.000     .3020658    1.059002
+   Dagecat3h |  -.0601639   .0445373    -1.35   0.177     -.147458    .0271301
+   Dagecat4h |   .0589142   .0411396     1.43   0.152    -.0217203    .1395487
+    Dagecat5 |   .7615899   .2264904     3.36   0.001     .3176641    1.205516
+   Dagecat5h |   .0294286   .0387896     0.76   0.448    -.0465999    .1054571
+     hhsizeh |  -.0534105   .0039556   -13.50   0.000    -.0611636   -.0456575
+      hhsize |   -.019517   .0099262    -1.97   0.049    -.0389725   -.0000615
+highskillocc |  -.1416747   .0722895    -1.96   0.050    -.2833637    .0000143
+highskillo~h |   .3219565   .0122578    26.27   0.000     .2979311     .345982
+middleskil~h |   .0630419   .0131376     4.80   0.000      .037292    .0887917
+        indh |  -.0426737   .0099738    -4.28   0.000    -.0622227   -.0231248
+       agrih |   .1120452   .0222719     5.03   0.000     .0683918    .1556985
+        agri |  -.3481803   .0394184    -8.83   0.000    -.4254412   -.2709193
+       scsth |  -.1773673   .0110514   -16.05   0.000    -.1990283   -.1557063
+selfemploy~h |  -.0504104   .0124649    -4.04   0.000    -.0748419    -.025979
+regwageurban |   .5953663   .0876722     6.79   0.000      .423527    .7672056
+regwageurb~h |   .0874624   .0121487     7.20   0.000     .0636507    .1112742
+    depratio |   1.461467   .2408766     6.07   0.000     .9893439     1.93359
+   Dmarriedh |   .0254475   .0168235     1.51   0.130    -.0075269    .0584219
+      Dmaleh |   .0178213   .0184115     0.97   0.333    -.0182656    .0539083
+       hhage |  -.0012465   .0008096    -1.54   0.124    -.0028333    .0003403
+   Dfirewood |    .115718   .0659757     1.75   0.079    -.0135958    .2450318
+  Dfirewoodh |  -.3384943   .0125997   -26.87   0.000      -.36319   -.3137986
+  Ddungcakeh |  -.2202509   .0356132    -6.18   0.000    -.2900535   -.1504482
+   Ddungcake |   .3068121   .0741975     4.14   0.000     .1613833    .4522408
+ Dnocookingh |   .2635798   .0389815     6.76   0.000     .1871752    .3399843
+  Dnocooking |   .8462766   .4129758     2.05   0.040     .0368355    1.655718
+  Dcokecoalh |  -.3597204   .0233575   -15.40   0.000    -.4055017   -.3139392
+  Dkeroseneh |  -.2539095   .0209075   -12.14   0.000    -.2948887   -.2129304
+   Dkerosene |  -.1849796   .1584472    -1.17   0.243    -.4955395    .1255803
+Delectrici~h |   .0310304   .0823848     0.38   0.706    -.1304455    .1925064
+Delectricity |  -.5764062   .7514636    -0.77   0.443    -2.049291    .8964782
+   Dcharcoal |  -4.526643   2.030057    -2.23   0.026    -8.505597   -.5476894
+  Dcharcoalh |  -.2269063   .1007942    -2.25   0.024    -.4244651   -.0293476
+        Dlpg |   -.031668   .0756765    -0.42   0.676    -.1799954    .1166595
+  rainfallQ1 |  -.0381727   .0118075    -3.23   0.001    -.0613157   -.0150298
+  rainfallQ3 |  -.0376375   .0208607    -1.80   0.071    -.0785249    .0032499
+  rainfallQ4 |   .0993613   .0232591     4.27   0.000     .0537729    .1449496
+rainfallQ1sq |   .0855289   .0223849     3.82   0.000      .041654    .1294038
+rainfallQ2sq |  -.0804731   .0275858    -2.92   0.004    -.1345419   -.0264042
+rainfallQ3sq |   .1027338    .021102     4.87   0.000     .0613734    .1440941
+rainfallQ4sq |  -.0166264   .0272537    -0.61   0.542    -.0700442    .0367914
+       _cons |   4.881206   .1372702    35.56   0.000     4.612154    5.150259
+------------------------------------------------------------------------------
+
+. predict yhaturban 
+(option xb assumed; fitted values)
+
+. 
+. oaxaca yhaturban $urbanvars [pw = pop_wgt], by(year) pooled relax nose
+
+Blinder-Oaxaca decomposition                    Number of obs     =     83,855
+                                                  Model           =     linear
+Group 1: year = 2011                              N of obs 1      =      41706
+Group 2: year = 2017                              N of obs 2      =      42149
+
+------------------------------------------------------------------------------
+   yhaturban |      Coef.
+-------------+----------------------------------------------------------------
+overall      |
+     group_1 |   4.737947
+     group_2 |   4.950617
+  difference |    -.21267
+   explained |    -.21267
+ unexplained |   6.05e-11
+-------------+----------------------------------------------------------------
+explained    |
+   Dagecat1h |  -.0233824
+    Dagecat1 |  -.0529915
+    Dagecat2 |  -.0090154
+   Dagecat2h |   .0011695
+    Dagecat3 |   -.008037
+   Dagecat3h |   .0009303
+   Dagecat4h |  -.0007533
+    Dagecat5 |  -.0177218
+   Dagecat5h |  -.0004304
+     hhsizeh |  -.0047825
+      hhsize |  -.0134718
+highskillocc |   .0050356
+highskillo~h |   -.015507
+middleskil~h |  -.0004625
+        indh |   .0006157
+       agrih |   .0000115
+        agri |  -.0030032
+       scsth |   .0033213
+selfemploy~h |   .0010513
+regwageurban |  -.0376241
+regwageurb~h |  -.0012877
+    depratio |   .0199106
+   Dmarriedh |  -.0000691
+      Dmaleh |  -.0000462
+       hhage |   .0010406
+   Dfirewood |   .0208321
+  Dfirewoodh |  -.0337688
+  Ddungcakeh |  -.0022679
+   Ddungcake |    .009419
+ Dnocookingh |   .0032699
+  Dnocooking |   .0021653
+  Dcokecoalh |  -.0058858
+  Dkeroseneh |  -.0101351
+   Dkerosene |  -.0075485
+Delectrici~h |   .0000738
+Delectricity |   -.000499
+   Dcharcoal |   .0012117
+  Dcharcoalh |  -.0000693
+        Dlpg |   .0085639
+  rainfallQ1 |   .0077877
+  rainfallQ3 |  -.0083994
+  rainfallQ4 |  -.0641444
+rainfallQ1sq |  -.0076918
+rainfallQ2sq |   .0143296
+rainfallQ3sq |    .012051
+rainfallQ4sq |   .0035356
+-------------+----------------------------------------------------------------
+unexplained  |
+   Dagecat1h |   7.31e-10
+    Dagecat1 |  -4.86e-10
+    Dagecat2 |   2.84e-08
+   Dagecat2h |   1.01e-09
+    Dagecat3 |   7.48e-09
+   Dagecat3h |  -3.53e-10
+   Dagecat4h |   4.60e-10
+    Dagecat5 |  -2.80e-09
+   Dagecat5h |   1.05e-09
+     hhsizeh |   3.13e-09
+      hhsize |  -2.38e-08
+highskillocc |  -9.19e-11
+highskillo~h |   2.25e-09
+middleskil~h |   1.37e-10
+        indh |   5.67e-10
+       agrih |   3.69e-10
+        agri |  -6.32e-09
+       scsth |   4.88e-09
+selfemploy~h |  -3.55e-09
+regwageurban |   5.16e-09
+regwageurb~h |   1.83e-09
+    depratio |   2.08e-08
+   Dmarriedh |  -3.55e-10
+      Dmaleh |  -4.96e-09
+       hhage |  -3.42e-09
+   Dfirewood |  -1.67e-08
+  Dfirewoodh |   2.05e-10
+  Ddungcakeh |  -2.32e-10
+   Ddungcake |  -2.05e-09
+ Dnocookingh |  -2.87e-10
+  Dnocooking |  -1.90e-09
+  Dcokecoalh |  -3.96e-10
+  Dkeroseneh |  -3.84e-10
+   Dkerosene |  -2.36e-09
+Delectrici~h |  -1.26e-11
+Delectricity |  -3.32e-10
+   Dcharcoal |   1.68e-10
+  Dcharcoalh |   1.39e-11
+        Dlpg |  -3.75e-08
+  rainfallQ1 |  -1.19e-09
+  rainfallQ3 |   6.90e-09
+  rainfallQ4 |   3.24e-09
+rainfallQ1sq |  -2.10e-09
+rainfallQ2sq |  -1.82e-10
+rainfallQ3sq |  -3.23e-09
+rainfallQ4sq |  -4.97e-09
+       _cons |   3.11e-08
+------------------------------------------------------------------------------
+
+. matrix results_urban = r(table)'
+
+. putexcel set oaxaca_urban.xlsx, sheet("urban", replace) modify
+
+. putexcel A1 = "Type"
+file oaxaca_urban.xlsx saved
+
+. putexcel B1 = "Variable"
+file oaxaca_urban.xlsx saved
+
+. putexcel C1 = "Value"
+file oaxaca_urban.xlsx saved
+
+. putexcel A2 = matrix(results_urban), rownames
+file oaxaca_urban.xlsx saved
+
+. 
+. 
+. 
+. 
+. 
+. cap log close

@@ -1,0 +1,132 @@
+
+. 
+. * locals for directories and variables
+. 
+. local datain "$data\finaldata\sae14.dta"
+
+. local datainu "$data\finaldata\sae14u.dta"
+
+. local datainr "$data\finaldata\sae14r.dta"
+
+. 
+. local dataout "$analysis\SAE_MATA"
+
+. local dataoutu "$analysis\SAE_MATAu"
+
+. local dataoutr "$analysis\SAE_MATAr"
+
+. 
+. 
+. local ydump "$analysis\mata"
+
+. local ydumpu "$analysis\matau"
+
+. local ydumpr "$analysis\matar"
+
+. 
+. glo res "$analysis\SAE_results"
+
+. 
+. /*
+> * Constant coefficient: per capita expd, psu level means, different age composition
+> local xvar010   "agri agrih     Dagecat1 Dagecat1h Dagecat2     Dagecat2h Dagecat3 Dagecat3h Dagecat4 Dagecat4h Dagecat6 Dagecat6h D
+> hhsizecat1 Dhhsizecat1h     Dhhsizecat2     Dhhsizecat2h Dhhsizecat3 Dhhsizecat3h Dhhsizecat4 Dhhsizecat4h Dhhsizecat6 Dhhsizecat6h 
+> hhr     hhrh highskillocc highskillocch hindu hinduh ind indh middleskillocc middleskillocch rainfallQ1 rainfallQ2      rainfallQ3  
+>     rainfallQ4      recr recrh scst scsth selfemployed selfemployedh transpr transprh"                                              
+>                                                                                                                                 
+> * With Time Trends on all hhlevel hhsize and age category variables                                                                 
+>                                                                                                                                     
+>                                                                                                                                     
+>                                                                                                                                     
+>                                                                 
+> local xvar010t  "agri agrih     Dagecat1 Dagecat1h Dagecat1ht Dagecat2 Dagecat2h Dagecat2ht     Dagecat3 Dagecat3h Dagecat3ht Dageca
+> t4 Dagecat4h Dagecat4ht     Dagecat6 Dagecat6h      Dagecat6ht      Dhhsizecat1     Dhhsizecat1h Dhhsizecat1ht      Dhhsizecat2     
+> Dhhsizecat2h Dhhsizecat2ht      Dhhsizecat3     Dhhsizecat3h Dhhsizecat3ht      Dhhsizecat4     Dhhsizecat4h Dhhsizecat4ht      Dhhs
+> izecat6     Dhhsizecat6h Dhhsizecat6ht hhr  hhrh hhrht highskillocc highskillocch hindu     hinduh  hindut  ind     indh indht middl
+> eskillocc middleskillocch rainfallQ1 rainfallQ2 rainfallQ3 rainfallQ4 recr recrh recrt scst     scsth selfemployed selfemployedh sel
+> femployedht t transpr transprh"                                             
+> * With Time Trends on only some hh and age category that have time trends                                                           
+>                                                                                                                                     
+>                                                                                                                                     
+>                                                                                                                                     
+>                                                                         
+> local xvar011t  "agri agrih     Dagecat1 Dagecat1h Dagecat1ht Dagecat2 Dagecat2h Dagecat3 Dagecat3h     Dagecat4 Dagecat4h Dagecat6 
+>     Dagecat6h Dhhsizecat1 Dhhsizecat1h Dhhsizecat1ht Dhhsizecat2 Dhhsizecat2h Dhhsizecat2t Dhhsizecat3 Dhhsizecat3h Dhhsizecat4     
+> Dhhsizecat4h Dhhsizecat6 Dhhsizecat6h hhr hhrh hhrht highskillocc highskillocch hindu hinduh hindut     ind     indh indht middleski
+> llocc middleskillocch rainfallQ1 rainfallQ2 rainfallQ3      rainfallQ4 recr recrh recrt scst scsth selfemployed     selfemployedh se
+> lfemployedht t transpr transprh"                                                                                                    
+>     
+> 
+> * rural 
+> ** specification is copied and pasted from modelselection.do 
+> local xvar011t "Dhhsizecat? Dhhsizecat?h Dagecat? Dagecat?h hindu hinduh scst scsth " 
+> local xvar011t  "`xvar011t' selfemployed selfemployedh casualurban regwageurban highskillocc highskillocch " 
+> local xvar011t  "`xvar011t'     middleskillocc  middleskillocch hhr hhrh recr recrh transpr     transprh rainfallQ? rainfallQ?sq t"
+> 
+>  foreach var in Dhhsizecat2h Dhhsizecat3h  Dhhsizecat4h Dhhsizecat6h  ///
+>                                 Dagecat1h Dagecat4h Dagecat6h scsth selfemployedh ///
+>                                 middleskillocch highskillocch recrh agrih  {
+>         local xvar011t "`xvar011t' `var't" 
+>         } 
+> 
+> 
+> * urban 
+> * Constant coefficient: per capita expd, psu level means, different age composition, hhsize categories;  casualurban    casualurbanh
+>   removed due to multicollinearity
+> local xvar110 "agri     agrih   Dagecat1        Dagecat1h       Dagecat2        Dagecat2h       Dagecat3        Dagecat3h       Dage
+> cat4        Dagecat4h       Dagecat6        Dagecat6h       Dhhsizecat1     Dhhsizecat1h    Dhhsizecat2     Dhhsizecat2h    Dhhsizec
+> at3     Dhhsizecat3h    Dhhsizecat4     Dhhsizecat4h    Dhhsizecat6     Dhhsizecat6h    hhr     hhrh    highskillocc    highskillocc
+> h   hindu   hinduh  ind     indh    middleskillocc  middleskillocch rainfallQ1      rainfallQ2      rainfallQ3      rainfallQ4      
+> recr    recrh   regwageurban    regwageurbanh   scst    scsth   selfemployed    selfemployedh   transpr transprh"                   
+>                                                                                                             
+> * With Time Trends on all hhlevel hhsize and age category variables;  casualurban       casualurbanh  removed due to multicollineari
+> ty                                                                                                                                  
+>                                                                                                                                     
+>                                                                                                                                     
+>                                                                                                                 
+> local xvar110t "agri    agrih   Dagecat1        Dagecat1h       Dagecat1ht      Dagecat2        Dagecat2h       Dagecat2ht      Dage
+> cat3        Dagecat3h       Dagecat3ht      Dagecat4        Dagecat4h       Dagecat4ht      Dagecat6        Dagecat6h       Dagecat6
+> ht      Dhhsizecat1     Dhhsizecat1h    Dhhsizecat1ht   Dhhsizecat2     Dhhsizecat2h    Dhhsizecat2ht   Dhhsizecat3     Dhhsizecat3h
+>     Dhhsizecat3ht   Dhhsizecat4     Dhhsizecat4h    Dhhsizecat4ht   Dhhsizecat6     Dhhsizecat6h    Dhhsizecat6ht   hhr     hhrh    
+> highskillocc    highskillocch   highskilloccht  hindu   hinduh  hindut  ind     indh    middleskillocc  middleskillocch rainfallQ1  
+>     rainfallQ2      rainfallQ3      rainfallQ4      recr    recrh   regwageurbanh   regwageurbanht  scst    scsth   scstht  selfempl
+> oyedh   t       transpr transprh"
+> * With Time Trends on only some hh and age category that have time trends;  casualurban casualurbanh  removed due to multicollineari
+> ty                                                                                                                                  
+>                                                                                                                                     
+>                                                                                                                                     
+>                                                                                                                 
+> local xvar111t "agri    agrih   agriht          Dagecat1        Dagecat1h Dagecat1t     Dagecat2        Dagecat2h       Dagecat2t   
+>     Dagecat3        Dagecat3h       Dagecat4        Dagecat4h       Dagecat4ht      Dagecat6        Dagecat6h       Dhhsizecat1     
+> Dhhsizecat1h    Dhhsizecat2     Dhhsizecat2h    Dhhsizecat2t    Dhhsizecat3     Dhhsizecat3h    Dhhsizecat4     Dhhsizecat4h    Dhhs
+> izecat6     Dhhsizecat6h    Dhhsizecat6t    hhr     hhrh    highskillocc    highskillocch   highskilloccht  hindu   hinduh  ind     
+> indh    indht   indt    middleskillocc  middleskillocch rainfallQ1      rainfallQ2      rainfallQ3      rainfallQ4      recr    recr
+> h   recrht  regwageurban regwageurbanh      regwageurbanht  scst    scsth   selfemployed selfemployedh      t       transpr transprh
+> "                       
+> 
+> 
+> local xvar111t "Dhhsizecat? Dhhsizecat?h Dagecat? Dagecat?h"
+> local xvar111t "`xvar111t' hindu hinduh scst scsth      regwageurban regwageurbanh selfemployed selfemployedh"
+> local xvar111t  "`xvar111t'      casualurban casualurbanh highskillocc  highskillocch middleskillocc"
+> local xvar111t "`xvar111t' middleskillocch hhr hhrh recr recrh transpr  transprh rainfallQ? rainfallQ?sq t" 
+> 
+>  foreach var in Dhhsizecat3h Dhhsizecat6h Dagecat4h ///
+>                                 regwageurbanh casualurbanh casualurban  ///
+>                      highskillocch middleskillocch middleskillocc hhrh  agrih indh {
+>                 local xvar111t "`xvar111t' `var't" 
+>                 } 
+> */
+. ********************************************************************************
+. ************************************ MODEL ************************************
+. ********************************************************************************
+. 
+. * First Stage
+. use "$data\finaldata\hh_reg.dta", clear
+file \finaldata\hh_reg.dta not found
+r(601);
+
+end of do-file
+
+r(601);
+
+. exit, clear
